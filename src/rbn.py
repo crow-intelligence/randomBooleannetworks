@@ -4,8 +4,8 @@ import random
 import numpy as np
 from PIL import Image
 
-k = 50
-l = 5000
+k = 50 # connections
+l = 1000
 
 
 def get_truth_table():
@@ -31,7 +31,7 @@ def apply_rule(state, truth_table):
     return [truth_table[e] for e in neighbors]
 
 
-for j in range(5000):
+for j in range(500):
     ttable = get_truth_table()
     initial_state = random.choices([0, 1], k=k)
     connections = random.choices(list(itertools.combinations(list(range(k)), 3)), k=k)
@@ -41,11 +41,11 @@ for j in range(5000):
         state = booleans[-1]
         new_state = apply_rule(state, ttable)
         booleans.append(new_state)
-        if i % 1000 == 0:
+        if i % random.randint(2, 30) == 0:
             ttable = get_truth_table()
     booleans = np.asarray(booleans).transpose().astype("uint8") * 255
     img = Image.fromarray(booleans)
-    img = img.resize((5000, 400))
+    img = img.resize((3000, 1500))
     fname = f"outputs/{str(j).zfill(4)}.png"
     print(fname)
     img.save(fname)
